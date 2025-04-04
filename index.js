@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const pool = require("./config/db.js");
 const PORT = process.env.PORT || 5000;
 const app = express();
+const userRoutes = require("./routes/user.routes.js");
 
 const createUserTable = require("./models/user.model.js");
 const createIncidentTable = require("./models/incident.model.js");
@@ -30,16 +31,28 @@ const initDB = async () => {
 //initializing database on server start
 initDB();
 
+
 //middleware
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
-//test route
-app.get("/", (req, res) => {
-  res.send("Backend is up and running!");
+
+// api routes
+app.use("/api/users", userRoutes);
+
+//default route
+app.get("/", (req,res) => {
+  res.send("ASIRS API Running!");
+
 });
+
+
+//test route
+// app.get("/", (req, res) => {
+//   res.send("Backend is up and running!");
+// });
 
 app.get("/db-test", async (req, res) => {
   try {
@@ -54,17 +67,6 @@ app.get("/db-test", async (req, res) => {
 
 
 
-//test db connection
-app.get("/db-test",async(req, res) => {
-  try {
-    const res = await pool.query("SELECT NOW()");
-    req.json({success:true, timestamp: res.rows[0].now});
-  }
-  catch (error) {
-    console.error("Error connecting to the database", error);
-    res.status(500).json({success:false, error: error.message});
-  }
-});
 
 //start server
 
