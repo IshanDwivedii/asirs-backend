@@ -7,9 +7,11 @@ const pool = require("./config/db.js");
 const PORT = process.env.PORT || 5000;
 const app = express();
 const userRoutes = require("./routes/user.routes.js");
+const incidentRoutes = require('./routes/incident.routes.js');
+
 
 const createUserTable = require("./models/user.model.js");
-const createIncidentTable = require("./models/incident.model.js");
+const {createIncidentTable} = require("./models/incident.model");
 const createLogsTable = require("./models/log.model.js");
 const createAutomationRuleTable = require("./models/automationRule.model.js");
 const createResponseTable = require("./models/response.model.js");
@@ -41,6 +43,8 @@ app.use(morgan("dev"));
 
 // api routes
 app.use("/api/users", userRoutes);
+app.use("/api/incidents", incidentRoutes);
+
 
 //default route
 app.get("/", (req,res) => {
