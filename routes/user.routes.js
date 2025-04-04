@@ -5,11 +5,11 @@ const router = express.Router();
 
 //create user
 router.post("/", async(req, res) => {
-    const {username, email, password, role} = req.body;
+    const {name, email, password_hash, role} = req.body;
     try {
         const newUser = await pool.query(
-            "INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
-            [username, email, password, role]
+            "INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING *",
+            [name, email, password_hash, role]
         );
         res.status(201).json(newUser.rows[0]);
     }
@@ -34,11 +34,11 @@ router.get("/:id", async(req, res) => {
 
 //update user
 router.put("/:id", async (req, res) => {
-    const { username, email, password, role } = req.body;
+    const { name, email, password_hash, role } = req.body;
     try {
       const updatedUser = await pool.query(
-        "UPDATE users SET username = $1, email = $2, password = $3, role = $4 WHERE id = $5 RETURNING *",
-        [username, email, password, role, req.params.id]
+        "UPDATE users SET name = $1, email = $2, password_hash = $3, role = $4 WHERE id = $5 RETURNING *",
+        [name, email, password_hash, role, req.params.id]
       );
       res.json(updatedUser.rows[0]);
     } catch (err) {
