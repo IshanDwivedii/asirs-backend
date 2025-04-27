@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const userRoutes = require("./routes/user.routes.js");
 const incidentRoutes = require('./routes/incident.routes.js');
+const authRoutes = require('./routes/auth.routes.js');
+
 
 
 const createUserTable = require("./models/user.model.js");
@@ -42,6 +44,7 @@ app.use(morgan("dev"));
 
 
 // api routes
+app.use("/api/auth", authRoutes); 
 app.use("/api/users", userRoutes);
 app.use("/api/incidents", incidentRoutes);
 
